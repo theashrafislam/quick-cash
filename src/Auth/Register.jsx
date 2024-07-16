@@ -31,12 +31,17 @@ const Register = () => {
 
     axios.post('http://localhost:5000/register-user', userRegisterInfo)
       .then(res => {
-        if(res.data.insertedId){
+        if (res.data.insertedId) {
           toast.success('Registration successful! Welcome to Quick Cash.')
         }
       })
       .catch(error => {
-        toast.error('Registration failed. Please try again.');
+        if (error.response.status === 400) {
+          toast.error('Email or Mobile number is already used.');
+        }
+        else {
+          toast.error('Registration failed. Please try again.');
+        }
       });
   }
 
@@ -49,43 +54,43 @@ const Register = () => {
         <form onSubmit={handleRegister}>
           <div className="mb-4">
             <label className="block text-gray-700">Name</label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               name="name"
               placeholder='Enter your name'
-              className="w-full p-2 border border-gray-300 rounded mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400" 
-              required 
+              className="w-full p-2 border border-gray-300 rounded mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              required
             />
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">5-digit PIN</label>
-            <input 
-              type="password" 
+            <input
+              type="password"
               name="pin"
               placeholder='Enter your PIN'
-              className="w-full p-2 border border-gray-300 rounded mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400" 
-              required 
+              className="w-full p-2 border border-gray-300 rounded mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              required
               title="PIN must be a 5-digit number"
             />
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">Mobile Number</label>
-            <input 
-              type="number" 
+            <input
+              type="number"
               name="mobileNumber"
               placeholder='Enter your mobile number'
-              className="w-full p-2 border border-gray-300 rounded mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400" 
-              required 
+              className="w-full p-2 border border-gray-300 rounded mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              required
             />
           </div>
           <div className="mb-4">
             <label className="block text-gray-700">Email</label>
-            <input 
-              type="email" 
+            <input
+              type="email"
               name="email"
               placeholder='Enter your e-mail'
-              className="w-full p-2 border border-gray-300 rounded mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400" 
-              required 
+              className="w-full p-2 border border-gray-300 rounded mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              required
             />
           </div>
           <div className="mb-4">
@@ -102,7 +107,7 @@ const Register = () => {
             </select>
           </div>
           <button
-            type="submit" 
+            type="submit"
             className="w-full p-2 bg-blue-500 text-white rounded mt-4 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
             Register
           </button>

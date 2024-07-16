@@ -15,19 +15,17 @@ const Login = () => {
         if (!/^\d{5}$/.test(pin)) {
             toast.error('PIN must be a 5-digit number.')
             return
-          }
+        }
 
-        axios.get('http://localhost:5000/register-user')
+        const loginInfo = {
+            emailOrPhone: emailOrPhone,
+            pin: pin
+        }
+
+        axios.get('http://localhost:5000/login', loginInfo)
             .then(res => {
-                console.log(res.data);
-                if(res.data.lenght > 0){
-                    const find = res.data?.find(user => user.email || user.mobileNumber == emailOrPhone);
-                    return setEmailOk(find)
-                }
-                if(res.data.lenght > 0){
-                    const find = res.data?.find(user => user.pin  == pin);
-                    return setPinOk(find)
-                }
+                console.log(res);
+
             })
             .catch(error => console.log(error))
     }
