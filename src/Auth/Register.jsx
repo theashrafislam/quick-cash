@@ -1,8 +1,13 @@
 import toast, { Toaster } from "react-hot-toast";
 import { useState } from "react";
+import axios from "axios";
 
 const Register = () => {
-  const [selectedRole, setSelectedRole] = useState('user'); // Default role is 'user'
+  const [selectedRole, setSelectedRole] = useState('user');
+
+  const handleRoleChange = (e) => {
+    setSelectedRole(e.target.value);
+  }
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -11,19 +16,31 @@ const Register = () => {
     const pin = form.pin.value;
     const mobileNumber = form.mobileNumber.value;
     const email = form.email.value;
-
     if (!/^\d{5}$/.test(pin)) {
       toast.error('PIN must be a 5-digit number.')
       return
     }
 
-    // Example of what you can do with selectedRole
-    console.log(name, pin, mobileNumber, email, selectedRole);
+    const userRegisterInfo = {
+      name: name,
+      pin: pin,
+      mobileNumber: mobileNumber,
+      email: email,
+      userRole: selectedRole
+    }
+
+    axios.post('http://localhost:5000/register-user', userRegisterInfo)
+      .then(res => {
+        if(res.data.insertedId){
+          toast.success('Registration successful! Welcome to Quick Cash.')
+        }
+      })
+      .catch(error => {
+        toast.error('Registration failed. Please try again.');
+      });
   }
 
-  const handleRoleChange = (e) => {
-    setSelectedRole(e.target.value);
-  }
+
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
